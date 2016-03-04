@@ -1,6 +1,6 @@
-spark_master:
+sparkmaster:
   image: lab41/spark-master
-  hostname: "sparkmaster"
+  container_name: sparkmaster
   expose:
     - 7001
     - 7002
@@ -21,8 +21,6 @@ spark_master:
 
 spark_worker:
   image: lab41/spark-worker
-  links:
-    - spark_master
   expose:
     - 7012
     - 7013
@@ -37,3 +35,13 @@ spark_worker:
   volumes:
     - ./runtime/cdh5/hadoop/conf:/etc/hadoop/conf
     - ./runtime/cdh5/hive/conf:/etc/hive/conf
+
+spark_webapp:
+  dockerfile: Dockerfile
+  build: ./
+  command: /usr/local/spark/bin/spark-submit --master spark://sparkmaster:7077 --total-executor-cores 14 --executor-memory 1g --class endpoint server.py
+  working_dir: /src/app
+  ports:
+    - 5432:5432
+  volumes:
+    - .:/src/app
