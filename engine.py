@@ -91,7 +91,7 @@ class RecommendationEngine:
 
         # Load ratings data for later use
         logger.info("Loading Ratings data...")
-        ratings_file_path = "file:////src/app/%s" % os.path.join(dataset_path, 'ratings.csv')
+        ratings_file_path = os.path.join(dataset_path, 'ratings.csv')
         ratings_raw_RDD = self.sc.textFile(ratings_file_path)
         ratings_raw_data_header = ratings_raw_RDD.take(1)[0]
         self.ratings_RDD = ratings_raw_RDD.filter(lambda line: line!=ratings_raw_data_header)\
