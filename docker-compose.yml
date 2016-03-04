@@ -45,3 +45,4 @@ spark_webapp:
     - 5432:5432
   volumes:
     - .:/src/app
+  env_file: ./.env
